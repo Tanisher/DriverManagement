@@ -23,6 +23,8 @@ public class DriverTrip {
 
     private String plateNumber;
 
+    @ManyToOne
+    private Customer customer;
 
     // Getters, setters, constructors
 }
