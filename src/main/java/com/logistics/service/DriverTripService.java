@@ -9,4 +9,5 @@ public interface DriverTripService {
     List<DriverTrip> getAllDriverTrips();
     DriverTrip getDriverTripById(Long id);
     void deleteDriverTrip(Long id);
+    List<DriverTrip> getTripsByDriverId(Long driverId); // New method to fetch trips by driver ID
 }

@@ -34,4 +34,10 @@ public class DriverTripController {
     public void deleteDriverTrip(@PathVariable Long id) {
         driverTripService.deleteDriverTrip(id);
     }
+
+    // New endpoint to get trips for a specific driver
+    @GetMapping("/driver/{driverId}")
+    public List<DriverTrip> getTripsByDriverId(@PathVariable Long driverId) {
+        return driverTripService.getTripsByDriverId(driverId);
+    }
 }

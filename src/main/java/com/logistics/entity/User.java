@@ -1,9 +1,6 @@
 package com.logistics.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,8 +26,10 @@ public class User {
     @Email(message = "Invalid email format")
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.OFFICE;
 
-    private String role = "Office"; // Default role
-
-
+    public enum UserRole {
+        OFFICE, ADMIN, MECHANIC, DRIVER
+    }
 }

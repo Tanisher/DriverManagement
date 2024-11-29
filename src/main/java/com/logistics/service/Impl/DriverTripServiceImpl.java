@@ -34,4 +34,9 @@ public class DriverTripServiceImpl implements DriverTripService {
     public void deleteDriverTrip(Long id) {
         driverTripRepository.deleteById(id);
     }
+
+    @Override
+    public List<DriverTrip> getTripsByDriverId(Long driverId) {
+        return driverTripRepository.findByDriverId(driverId); // Fetch trips for the specified driver
+    }
 }
