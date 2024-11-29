@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "logistics_load")
 public class Load {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +17,10 @@ public class Load {
 
     private String description;
     private double weight;
-    private String destination;
+    private String pickupLocation;
+    private String deliveryLocation;
+    private String status; // e.g., "Pending", "In Transit", "Delivered"
+
 
 
     @ManyToOne
