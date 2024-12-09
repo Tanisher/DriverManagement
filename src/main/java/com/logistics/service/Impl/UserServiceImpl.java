@@ -1,8 +1,7 @@
 package com.logistics.service.Impl;
 
 import com.logistics.entity.*;
-import com.logistics.repository.DriverRepository;
-import com.logistics.repository.UserRepository;
+import com.logistics.repository.*;
 import com.logistics.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,18 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DriverRepository driverRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AdminRepository adminRepository;
+    private final OfficeStaffRepository officeStaffRepository;
+    private final MechanicRepository mechanicRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, DriverRepository driverRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, DriverRepository driverRepository, AdminRepository adminRepository, OfficeStaffRepository officeStaffRepository
+    , MechanicRepository mechanicRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.driverRepository = driverRepository;
+        this.adminRepository = adminRepository;
+        this.officeStaffRepository = officeStaffRepository;
+        this.mechanicRepository = mechanicRepository;
     }
 
     @Override
@@ -45,23 +51,23 @@ public class UserServiceImpl implements UserService {
 
                 return driverRepository.save(driver);
 
-//            case ADMIN:
-//                Admin admin = user instanceof Admin
-//                        ? (Admin) user
-//                        : convertToAdmin(user);
-//                return adminRepository.save(admin);
+            case ADMIN:
+                Admin admin = user instanceof Admin
+                        ? (Admin) user
+                        : convertToAdmin(user);
+                return adminRepository.save(admin);
 
-//            case MECHANIC:
-//                Mechanic mechanic = user instanceof Mechanic
-//                        ? (Mechanic) user
-//                        : convertToMechanic(user);
-//                return mechanicRepository.save(mechanic);
+            case MECHANIC:
+                Mechanic mechanic = user instanceof Mechanic
+                        ? (Mechanic) user
+                        : convertToMechanic(user);
+                return mechanicRepository.save(mechanic);
 
-//            case OFFICE_STAFF:
-//                OfficeStaff officeStaff = user instanceof OfficeStaff
-//                        ? (OfficeStaff) user
-//                        : convertToOfficeStaff(user);
-//                return officeStaffRepository.save(officeStaff);
+            case OFFICE:
+                OfficeStaff officeStaff = user instanceof OfficeStaff
+                        ? (OfficeStaff) user
+                        : convertToOfficeStaff(user);
+                return officeStaffRepository.save(officeStaff);
 
             default:
                 return userRepository.save(user);
@@ -89,5 +95,25 @@ public class UserServiceImpl implements UserService {
         admin.setEmail(user.getEmail());
         admin.setRole(User.UserRole.ADMIN);
         return admin;
+    }
+
+    private OfficeStaff convertToOfficeStaff(User user) {
+        OfficeStaff officeStaff = new OfficeStaff();
+        officeStaff.setId(user.getId());
+        officeStaff.setUsername(user.getUsername());
+        officeStaff.setPassword(user.getPassword());
+        officeStaff.setEmail(user.getEmail());
+        officeStaff.setRole(User.UserRole.OFFICE);
+        return officeStaff;
+    }
+
+    private Mechanic convertToMechanic(User user) {
+        Mechanic mechanic = new Mechanic();
+        mechanic.setId(user.getId());
+        mechanic.setUsername(user.getUsername());
+        mechanic.setPassword(user.getPassword());
+        mechanic.setEmail(user.getEmail());
+        mechanic.setRole(User.UserRole.MECHANIC);
+        return mechanic;
     }
 }

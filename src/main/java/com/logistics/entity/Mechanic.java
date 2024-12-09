@@ -1,6 +1,5 @@
 package com.logistics.entity;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +7,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("MECHANIC")
+
 public class Mechanic extends User {
     private String specialization;
     private String certificationLevel;
+
+    public Mechanic() {
+        // Always set the role to DRIVER when creating a Driver
+        setRole(UserRole.MECHANIC);
+    }
 
 }
