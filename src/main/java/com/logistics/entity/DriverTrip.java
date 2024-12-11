@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.print.attribute.standard.Destination;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,16 +16,17 @@ public class DriverTrip {
 
     private LocalDateTime dateTime;
 
-    private Destination destination;
-    private String StartingMillage;
-    private String EndingMillage;
+    private String destination;
+    private double StartingMillage;
+    private double EndingMillage;
 
-    private int FuelLitres;
+    private double FuelLitres;
 
     private String trailer1;
     private String trailer2;
 
 
+    //Relationships
     @ManyToOne
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
@@ -41,13 +41,15 @@ public class DriverTrip {
     private Customer customer;
 
 
+
+
     // Getters, setters, constructors
 
 
     public DriverTrip() {
     }
 
-    public DriverTrip(Long id, LocalDateTime dateTime, Destination destination, String startingMillage, String endingMillage, int fuelLitres, String trailer1, String trailer2, Driver driver, Load load, String plateNumber, Customer customer) {
+    public DriverTrip(Long id, LocalDateTime dateTime, String destination, double startingMillage, double endingMillage, double fuelLitres, String trailer1, String trailer2, Driver driver, Load load, String plateNumber, Customer customer) {
         this.id = id;
         this.dateTime = dateTime;
         this.destination = destination;

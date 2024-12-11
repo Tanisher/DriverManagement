@@ -2,6 +2,7 @@ package com.logistics.controllers;
 
 import com.logistics.entity.Customer;
 import com.logistics.service.CustomerService;
+import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +16,16 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @Transactional
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
+        System.out.println("attempt");
         return customerService.saveCustomer(customer);
     }
 
     @GetMapping
     public List<Customer> getAllCustomers() {
+        System.out.println("customers requested");
         return customerService.getAllCustomers();
     }
 

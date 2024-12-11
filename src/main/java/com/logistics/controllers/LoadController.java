@@ -1,7 +1,9 @@
 package com.logistics.controllers;
 
 import com.logistics.entity.Load;
+import com.logistics.entity.LoadDTO;
 import com.logistics.service.LoadService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,10 @@ public class LoadController {
     }
 
     @PostMapping
-    public Load createLoad(@RequestBody Load load) {
-        return loadService.saveLoad(load);
+    public ResponseEntity<LoadDTO> createLoad(@RequestBody Load load) {
+        Load savedLoad = loadService.saveLoad(load);
+        LoadDTO loadDTO = loadService.convertToDTO(savedLoad);
+        return ResponseEntity.ok(loadDTO);
     }
 
     @GetMapping

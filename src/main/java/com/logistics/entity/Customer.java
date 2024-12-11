@@ -1,9 +1,11 @@
 package com.logistics.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,15 +20,17 @@ public class Customer {
     private String name;
     private String contact;
     private String address;
-    private int numberOfTrips;
+    private String numberOfLoads;
+    private String email;
 
     // Relationships
+
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
-    private List<Load> loads;
+    private List<Load> loads = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
     private List<DriverTrip>driverTrips;
 
-    // Getters, setters, constructors
 }
 

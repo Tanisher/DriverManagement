@@ -1,12 +1,11 @@
 package com.logistics.controllers;
 
-import com.logistics.entity.DriverTrip;
-import com.logistics.entity.User;
-import com.logistics.repository.DriverRepository;
-import com.logistics.repository.UserRepository;
+import com.logistics.entity.*;
+import com.logistics.repository.*;
 import com.logistics.service.DriverTripService;
 import com.logistics.service.Impl.CustomUserDetailsService;
 import com.logistics.util.JwtUtil;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,13 +28,22 @@ public class DriverTripController {
     private final DriverRepository driverRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final UserRepository userRepository;
+    private final LoadRepository loadRepository;
+    private final CustomerRepository customerRepository;
+    private final DriverTripRepository driverTripRepository;
 
-    public DriverTripController(DriverTripService driverTripService, JwtUtil jwtUtil, DriverRepository driverRepository, CustomUserDetailsService customUserDetailsService, UserRepository userRepository) {
+    public DriverTripController(DriverTripService driverTripService, JwtUtil jwtUtil,
+                                DriverRepository driverRepository, CustomUserDetailsService customUserDetailsService,
+                                UserRepository userRepository, LoadRepository loadRepository,
+                                CustomerRepository customerRepository, DriverTripRepository driverTripRepository) {
         this.driverTripService = driverTripService;
         this.jwtUtil = jwtUtil;
         this.driverRepository = driverRepository;
         this.customUserDetailsService = customUserDetailsService;
         this.userRepository = userRepository;
+        this.loadRepository = loadRepository;
+        this.customerRepository = customerRepository;
+        this.driverTripRepository = driverTripRepository;
     }
 
     @PostMapping
@@ -141,6 +150,44 @@ public class DriverTripController {
         // Debug print response status
         System.out.println("Response status: " + response.getStatusCode());
         return getTripsByDriverId(driver.getId(), token );
+    }
+
+
+    //Addition of trip
+    @PostMapping("/create")
+    @Transactional
+    public ResponseEntity<DriverTrip> createTrip(@RequestBody TripDTO tripDTO) {
+        // Fetch related entities
+        Driver driver = driverRepository.findById(tripDTO.getDriverId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Driver not found"));
+
+        Load load = loadRepository.findById(tripDTO.getLoadId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Load not found"));
+
+        Customer customer = customerRepository.findById(tripDTO.getCustomerId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Customer not found"));
+
+        // Map DTO to entity
+        DriverTrip trip = new DriverTrip();
+        trip.setDateTime(tripDTO.getDateTime());
+        trip.setDestination(tripDTO.getDestination());
+        trip.setStartingMillage(tripDTO.getStartingMillage());
+        trip.setEndingMillage(tripDTO.getEndingMillage());
+        trip.setFuelLitres(tripDTO.getFuelLitres());
+        trip.setTrailer1(tripDTO.getTrailer1());
+        trip.setTrailer2(tripDTO.getTrailer2());
+        trip.setDriver(driver);
+        trip.setLoad(load);
+        trip.setPlateNumber(tripDTO.getPlateNumber());
+        trip.setCustomer(customer);
+
+        // Save the trip
+        DriverTrip savedTrip = driverTripRepository.save(trip);
+
+        return ResponseEntity.ok(savedTrip);
     }
 
 
