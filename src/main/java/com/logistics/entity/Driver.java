@@ -13,19 +13,15 @@ import java.util.List;
 
 public class Driver extends User{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     private String name;
     private String lastName;
     private String address;
     private String licenseNumber;
-//    private String nextOfKin;
-//    private String nextOfKinContact;
-//    private String mobileNumber;
-//
-//    private String IDNumber;
+    private String nextOfKin;
+    private String nextOfKinContact;
+    private String mobileNumber;
+
+    private String IDNumber;
 //    private String employeeNumber;
 
     public Driver() {
