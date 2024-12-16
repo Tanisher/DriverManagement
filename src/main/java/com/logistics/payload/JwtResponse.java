@@ -17,5 +17,4 @@ public class JwtResponse {
         this.username = username;
     }
 
-
 }

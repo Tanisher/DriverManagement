@@ -19,10 +19,6 @@ public class Fault {
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
 
-    @ManyToOne
-    @JoinColumn(name = "trip_id", nullable = false)
-    private DriverTrip trip;
-
     @Column(nullable = false)
     private String description; // Description of the fault or breakdown
 
@@ -33,5 +29,9 @@ public class Fault {
 
     @Column(length = 500)
     private String resolutionNotes; // Notes on how the fault was resolved
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
 
 }

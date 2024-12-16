@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FaultRepository extends JpaRepository<Fault, Long> {
     List<Fault> findByResolved(boolean resolved); // Find all faults by resolved status
+    List<Fault> findByVehicleId(Long vehicleId);
 }
