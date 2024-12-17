@@ -68,4 +68,20 @@ public class VehicleServiceImpl implements VehicleService {
     public List<Fault> getFaultsByVehicleId(Long vehicleId) {
         return faultRepository.findByVehicleId(vehicleId);
     }
+
+    @Override
+    public void updateVehicleLocation(Long vehicleId, Double latitude, Double longitude) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        vehicle.setLatitude(latitude);
+        vehicle.setLongitude(longitude);
+        vehicleRepository.save(vehicle);
+    }
+
+    @Override
+    public Vehicle findById(Long vehicleId) {
+        return vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+    }
 }

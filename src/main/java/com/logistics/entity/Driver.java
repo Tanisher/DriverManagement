@@ -10,8 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
-public class Driver extends User{
+public class Driver extends User {
 
     private String name;
     private String lastName;
@@ -20,21 +19,16 @@ public class Driver extends User{
     private String nextOfKin;
     private String nextOfKinContact;
     private String mobileNumber;
-
     private String IDNumber;
-//    private String employeeNumber;
 
-    public Driver() {
-        // Always set the role to DRIVER when creating a Driver
-        setRole(UserRole.DRIVER);
-    }
-
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = true) // A driver may or may not have a vehicle
+    private Vehicle vehicle;
 
     @OneToMany(mappedBy = "driver")
-    private List<DriverTrip> trips;
+    private List<Fault> faults;
 
-
-
-
-
+    public Driver() {
+        setRole(UserRole.DRIVER);
+    }
 }

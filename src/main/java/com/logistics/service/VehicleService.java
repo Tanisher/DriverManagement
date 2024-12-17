@@ -13,4 +13,6 @@ public interface VehicleService {
     Vehicle updateVehicle(Long id, Vehicle vehicle);
     void deleteVehicle(Long id);
     List<Fault> getFaultsByVehicleId(Long vehicleId);
+    void updateVehicleLocation(Long vehicleId, Double latitude, Double longitude);
+    Vehicle findById(Long vehicleId);
 }

@@ -45,4 +45,13 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fault> faults;
+
+    // Location fields
+    @Column(nullable = true)
+    private Double latitude;
+
+    @Column(nullable = true)
+    private Double longitude;
 }
+
+
