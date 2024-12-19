@@ -52,6 +52,20 @@ public class Vehicle {
 
     @Column(nullable = true)
     private Double longitude;
+
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
+
+    public void setDriver(Driver driver) {
+        if (this.driver != null) {
+            this.driver.setVehicle(null);
+        }
+        this.driver = driver;
+        if (driver != null) {
+            driver.setVehicle(this);
+        }
+    }
 }
 
 

@@ -4,6 +4,9 @@ import com.logistics.entity.Fault;
 import com.logistics.entity.Vehicle;
 import com.logistics.payload.VehicleLocationMessage;
 import com.logistics.service.VehicleService;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,6 +21,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
+
+    private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
+
 
     @Autowired
     private VehicleService vehicleService;
@@ -84,5 +90,30 @@ public class VehicleController {
     public VehicleLocationMessage sendLocationUpdate(VehicleLocationMessage message) {
         System.out.println("Received location update: " + message);
         return message; // Broadcast the received message
+    }
+
+    @PutMapping("/{vehicleId}/assign-driver")
+    public ResponseEntity<?> assignDriverToVehicle(
+            @PathVariable Long vehicleId,
+            @RequestBody Map<String, Long> request) {
+        Long driverId = request.get("driverId");
+        Vehicle vehicle = vehicleService.assignDriverToVehicle(vehicleId, driverId);
+        return ResponseEntity.ok(vehicle);
+    }
+
+    @PutMapping("/{vehicleId}/unassign-driver")
+    public ResponseEntity<?> unassignDriverFromVehicle(@PathVariable Long vehicleId) {
+        Vehicle vehicle = vehicleService.unassignDriverFromVehicle(vehicleId);
+        return ResponseEntity.ok(vehicle);
+    }
+
+    @GetMapping("/location/by-driver/{driverId}")
+    public ResponseEntity<?> getVehicleLocationByDriver(@PathVariable Long driverId) {
+        try {
+            Map<String, Double> location = vehicleService.getVehicleLocationByDriver(driverId);
+            return ResponseEntity.ok(location);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -19,7 +19,7 @@ public class Driver extends User {
     private String nextOfKin;
     private String nextOfKinContact;
     private String mobileNumber;
-    private String IDNumber;
+    private String idNumber;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id", nullable = true) // A driver may or may not have a vehicle
