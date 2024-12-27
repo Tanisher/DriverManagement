@@ -1,3 +1,10 @@
+/**
+ * File Name: Vehicle.java
+ * Last Modified By: Kudzie
+ * Last Modified On: 2024/12/22
+ * Description: vehicle tracking up to date
+ */
+
 package com.logistics.entity;
 
 import jakarta.persistence.*;
@@ -8,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-
 
 @Entity
 @Data

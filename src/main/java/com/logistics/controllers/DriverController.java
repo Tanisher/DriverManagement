@@ -1,35 +1,49 @@
 package com.logistics.controllers;
 
+import com.logistics.DTO.DriverDTO;
 import com.logistics.entity.Driver;
+import com.logistics.DTO.DriverMapper;
 import com.logistics.service.DriverService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/drivers")
 public class DriverController {
 
     private final DriverService driverService;
+    private final DriverMapper driverMapper;
 
-    public DriverController(DriverService driverService) {
+    @Autowired
+    public DriverController(DriverService driverService, DriverMapper driverMapper) {
         this.driverService = driverService;
+        this.driverMapper = driverMapper;
     }
 
     @PostMapping
-    public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) {
-        return ResponseEntity.ok(driverService.saveDriver(driver));
+    public ResponseEntity<DriverDTO> createDriver(@RequestBody DriverDTO driverDTO) {
+        Driver driver = driverMapper.toEntity(driverDTO);
+        Driver savedDriver = driverService.saveDriver(driver);
+        return ResponseEntity.ok(driverMapper.toDTO(savedDriver));
     }
 
     @GetMapping
-    public ResponseEntity<List<Driver>> getAllDrivers() {
-        return ResponseEntity.ok(driverService.getAllDrivers());
+    public ResponseEntity<List<DriverDTO>> getAllDrivers() {
+        List<DriverDTO> driverDTOs = driverService.getAllDrivers()
+                .stream()
+                .map(driverMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(driverDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Driver> getDriverById(@PathVariable Long id) {
-        return ResponseEntity.ok(driverService.getDriverById(id));
+    public ResponseEntity<DriverDTO> getDriverById(@PathVariable Long id) {
+        Driver driver = driverService.getDriverById(id);
+        return ResponseEntity.ok(driverMapper.toDTO(driver));
     }
 
     @DeleteMapping("/{id}")
