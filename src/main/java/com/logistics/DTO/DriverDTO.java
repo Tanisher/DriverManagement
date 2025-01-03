@@ -20,4 +20,5 @@ public class DriverDTO {
     private String nextOfKin;
     private String nextOfKinContact;
     private UserDTO user;
+
 }

@@ -24,11 +24,16 @@ public class DriverController {
         this.driverMapper = driverMapper;
     }
 
+    // Add error handling for driver creation
     @PostMapping
     public ResponseEntity<DriverDTO> createDriver(@RequestBody DriverDTO driverDTO) {
-        Driver driver = driverMapper.toEntity(driverDTO);
-        Driver savedDriver = driverService.saveDriver(driver);
-        return ResponseEntity.ok(driverMapper.toDTO(savedDriver));
+        try {
+            Driver driver = driverMapper.toEntity(driverDTO);
+            Driver savedDriver = driverService.saveDriver(driver);
+            return ResponseEntity.ok(driverMapper.toDTO(savedDriver));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping

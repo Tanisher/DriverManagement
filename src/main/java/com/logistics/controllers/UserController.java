@@ -20,7 +20,9 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
+
         userService.registerUser(user);
+
         return ResponseEntity.ok("User registered successfully");
     }
 }

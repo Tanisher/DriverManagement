@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
 
 
     private Driver convertToDriver(User user) {
+        System.out.println(user.getPassword()+"and"+user.getEmail());
         Driver driver = new Driver();
         driver.setId(user.getId());
         driver.setUsername(user.getUsername());
